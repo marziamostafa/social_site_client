@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -6,15 +6,17 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { FaMoon, FaSun, FaUserCircle } from "react-icons/fa";
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../../contexts/AuthProvider/AuthProvider';
 
 
 const NavBar = () => {
+    const { user, logOut } = useContext(AuthContext)
 
     const menuItems = <React.Fragment>
-        <li className='px-4'><Link to="/">Media</Link></li>
-        <li className='px-4'><Link to="/addtask">Add Task</Link></li>
-        <li className='px-4'><Link to="/mytask">My Task</Link></li>
-        <li className='px-4'><Link to="/completedtask">Completed Task</Link></li>
+        <li className='px-4 pt-2'><Link to="/">Media</Link></li>
+        <li className='px-4 pt-2'><Link to="/addtask">Add Task</Link></li>
+        <li className='px-4 pt-2'><Link to="/mytask">My Task</Link></li>
+        <li className='px-4 pt-2'><Link to="/completedtask">Completed Task</Link></li>
 
         {/* {user?.uid ?
             <>
@@ -39,6 +41,13 @@ const NavBar = () => {
 
     }
 
+    const handleLogOut = () => {
+        logOut()
+            .then(() => { })
+            .catch(error => {
+                console.error(error);
+            })
+    }
 
 
     useEffect(() => {
@@ -49,7 +58,7 @@ const NavBar = () => {
 
     return (
         <Navbar bg="light" expand="lg">
-            <Container fluid className='d-flex'>
+            <Container fluid className='d-flex align-items-center'>
                 <Navbar.Brand href="#" className='fs-3 fw-bold'>Socialism</Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse id="navbarScroll">
@@ -61,16 +70,20 @@ const NavBar = () => {
 
 
                         {menuItems}
-                        <Button className={`Header ${theme}`} onClick={toggleTheme} variant={theme}>{theme}{` `}
+                        <Button className={`Header ${theme}`} onClick={toggleTheme} variant={'outline-dark'}>{theme}{` mode`}
                             {theme === 'light' ?
-                                <FaMoon></FaMoon>
+                                <></>
                                 :
-                                <FaSun></FaSun>}
+                                <></>}
                         </Button>
                     </Nav>
                     <Form className="d-flex">
+                        {user?.uid ?
 
-                        <Button variant="outline-success">LogIn</Button>
+                            <Button onClick={handleLogOut} variant="outline-success">Logout</Button>
+                            :
+                            <Button variant="outline-success">LogIn</Button>
+                        }
                     </Form>
                 </Navbar.Collapse>
             </Container>

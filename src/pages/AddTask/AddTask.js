@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 import { FaCommentsDollar } from 'react-icons/fa';
 import { AuthContext } from '../../contexts/AuthProvider/AuthProvider';
 import './AddTask.css'
@@ -11,8 +12,9 @@ const AddTask = () => {
     // console.log(imageHosKey)
 
     const handleAddItem = (data) => {
-        console.log(data)
 
+        // console.log(data)
+        alert('This may take some time. Please wait')
         const image = data.image[0];
         const fromData = new FormData();
         fromData.append('image', image);
@@ -31,18 +33,34 @@ const AddTask = () => {
 
 
                     const item = {
-
-                        category_id: data.categoryId,
                         name: data.taskName,
                         image: imgData.data.url,
                         postTime: data.postTime,
 
-
-
                         details: data.details,
                         email: user?.email,
+                        link: data.taskLink
 
                     }
+
+                    fetch('http://localhost:5000/allmedia', {
+
+                        method: 'POST',
+                        headers: {
+                            'content-type': 'application/json',
+                            authorization: `bearer ${localStorage.getItem('usersToken')}`
+
+                        },
+                        body: JSON.stringify(item)
+                    })
+                        .then(res => res.json())
+                        .then(result => {
+
+                            console.log(result)
+                            toast.success('added Item successfully')
+                            window.location.reload()
+                            // navigate('/dashboard/myaddedproducts')
+                        })
 
                 }
             })
@@ -61,7 +79,7 @@ const AddTask = () => {
                         <input type="text" {...register("taskName", {
                             required: "Required"
                         })} className="input input-bordered w-full " />
-                        {errors.bookName && <p className='text-red-500'>{errors.bookName.message}</p>}
+                        {errors.taskName && <p className='text-red-500'>{errors.taskName.message}</p>}
                     </div>
 
 
@@ -74,6 +92,15 @@ const AddTask = () => {
                         {errors.details && <p className='text-red-500'>{errors.details.message}</p>}
                     </div>
 
+                    <div className="form-control max-w-screen-md my-8">
+                        <label className="label"> <span className="label-text">Used Tools </span></label>
+                        <br />
+                        <textarea type="text" {...register("usedTools", {
+                            required: "Required"
+                        })} className="input input-bordered w-full textarea" />
+                        {errors.usedTools && <p className='text-red-500'>{errors.usedTools.message}</p>}
+                    </div>
+
 
                     <div className="form-control  max-w-screen-md my-8">
                         <label className="label"> <span className="label-text">Write date and time</span></label>
@@ -81,6 +108,14 @@ const AddTask = () => {
                             required: 'Required'
                         })} className="input input-bordered w-full " />
                         {errors.postTime && <p className='text-red-500'>{errors.postTime.message}</p>}
+                    </div>
+
+                    <div className="form-control  max-w-screen-md my-8">
+                        <label className="label"> <span className="label-text">Task Link</span></label>
+                        <input type="text" {...register("taskLink", {
+
+                        })} className="input input-bordered w-full " />
+                        {errors.taskLink && <p className='text-red-500'>{errors.taskLink.message}</p>}
                     </div>
 
 

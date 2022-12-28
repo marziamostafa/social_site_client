@@ -17,7 +17,10 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/',
-                element: <Home></Home>
+                element: <Home></Home>,
+                loader: async ({ params }) => {
+                    return fetch(`http://localhost:5000/allmedia`)
+                }
             },
             {
                 path: '/login',
@@ -29,7 +32,8 @@ const router = createBrowserRouter([
             },
             {
                 path: '/mytask',
-                element: <MyTask></MyTask>
+                element: <MyTask></MyTask>,
+
             },
             {
                 path: '/completedtask',

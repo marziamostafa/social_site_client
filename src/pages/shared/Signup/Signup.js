@@ -1,15 +1,22 @@
 import React, { useContext, useState } from 'react';
-import { useForm } from 'react-hook-form';
+
 import { toast } from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthProvider/AuthProvider';
+import './Signup.css'
+
+
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import { FaGithub, FaGoogle } from 'react-icons/fa';
 
 const Signup = () => {
 
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const { createUser, updateUser } = useContext(AuthContext);
+
+    const { createUser, googleLogin, updateUser } = useContext(AuthContext);
     const [signUpError, setSignUPError] = useState('');
-    const [createdUserEmail, setCreatedUserEmail] = useState('')
+
+    const [error, setError] = useState('')
 
     // const [token] = useToken(createdUserEmail);
     const navigate = useNavigate();
@@ -18,81 +25,91 @@ const Signup = () => {
     //     navigate('/');
     // }
 
-    const handleSignUp = (data) => {
-        setSignUPError('');
-        createUser(data.email, data.password)
+    const handleSignUp = (event) => {
+        event.preventDefault();
+        const form = event.target;
+        const name = form.name.value;
+        const email = form.email.value;
+        const password = form.password.value;
+
+        console.log(name, email, password)
+
+        createUser(email, password)
             .then(result => {
                 const user = result.user;
                 console.log(user);
                 toast.success('User Created Successfully.')
                 const userInfo = {
-                    displayName: data.name,
-                    email: data.email,
-                    role: data.role
+                    displayName: name,
+                    email: email,
+
                 }
                 updateUser(userInfo)
-                    .then(() => {
-                        saveUser(data.name, data.email, data.role);
-                    })
-                    .catch(err => console.log(err));
+
+
             })
             .catch(error => {
-                console.log(error)
+                console.error(error);
                 setSignUPError(error.message)
-            });
-    }
-
-    const saveUser = (name, email, role) => {
-        const user = { name, email, role };
-        fetch('https://b612-used-products-resale-server-side-marziamostafa.vercel.app/users', {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(user)
-        })
-            .then(res => res.json())
-            .then(data => {
-                setCreatedUserEmail(email);
             })
+
+
     }
 
+    const handleGoogleSignIn = () => {
+
+        googleLogin()
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+                const userInfo = {
+                    displayName: user.displayName,
+                    email: user.email,
+                }
+
+                updateUser(userInfo)
+
+            })
+            .catch(error => {
+                console.error(error);
+            })
+
+    }
 
     return (
-        <div className='h-[800px] flex justify-center items-center'>
-            <div className='w-96 p-7'>
-                <h2 className='text-xl text-center'>Sign Up</h2>
-                <form onSubmit={handleSubmit(handleSignUp)}>
-                    <div className="form-control w-full max-w-xs">
-                        <label className="label"> <span className="label-text">Name</span></label>
-                        <input type="text" {...register("name", {
-                            required: "Name is Required"
-                        })} className="input input-bordered w-full max-w-xs" />
-                        {errors.name && <p className='text-red-500'>{errors.name.message}</p>}
-                    </div>
-                    <div className="form-control w-full max-w-xs">
-                        <label className="label"> <span className="label-text">Email</span></label>
-                        <input type="email" {...register("email", {
-                            required: true
-                        })} className="input input-bordered w-full max-w-xs" />
-                        {errors.email && <p className='text-red-500'>{errors.email.message}</p>}
-                    </div>
-                    <div className="form-control w-full max-w-xs">
-                        <label className="label"> <span className="label-text">Password</span></label>
-                        <input type="password" {...register("password", {
-                            required: "Password is required",
-                            minLength: { value: 6, message: "Password must be 6 characters long" },
-                            pattern: { value: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])/, message: 'Password must have uppercase, number and special characters' }
-                        })} className="input input-bordered w-full max-w-xs" />
-                        {errors.password && <p className='text-red-500'>{errors.password.message}</p>}
-                    </div>
 
 
+        <div className='form-input-container'>
+            <h2 className='form-title mb-4 fs-3 text-center'>Sign Up</h2>
 
-                    <input className='btn btn-accent w-full mt-4' value="Sign Up" type="submit" />
-                    {signUpError && <p className='text-red-600'>{signUpError}</p>}
-                </form>
-                <p>Already have an account <Link className='text-secondary' to="/login">Please Login</Link></p>
+            <Form className='container ' onSubmit={handleSignUp}>
+
+                <Form.Group className="mb-4 form-input" controlId="formBasicEmail">
+                    <Form.Label>Your Name</Form.Label>
+                    <Form.Control name="name" type="text" placeholder="Your Name" required />
+                </Form.Group>
+
+                <Form.Group className="mb-4 form-input" controlId="formBasicEmail">
+                    <Form.Label>Email address</Form.Label>
+                    <Form.Control name="email" type="email" placeholder="Enter email" required />
+                </Form.Group>
+
+                <Form.Group className="mb-4 form-input" controlId="formBasicPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control name="password" type="password" placeholder="Password" required />
+                </Form.Group>
+
+                <Button className='btn-submit mb-2 container mt-2' variant="outline-dark" type="submit">
+                    Sign Up
+                </Button>
+                <Form.Text className="text-danger">
+                    {error}
+                </Form.Text>
+            </Form>
+            <p className='ps-2 text-dark'><small>Already have an account? <Link to='/login'>Create new account</Link></small></p>
+
+            <div className='loader container'>
+                <Button onClick={handleGoogleSignIn} className='mb-2 d-flex justify-content-center align-items-center' variant="outline-dark"><FaGoogle></FaGoogle> Sign up with Google</Button>
 
             </div>
         </div>
