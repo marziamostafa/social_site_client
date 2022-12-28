@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import { FaMoon, FaSun, FaUserCircle } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 
 
@@ -24,6 +24,28 @@ const NavBar = () => {
             : <li><Link className='btn btn-outline' to="/login">Login</Link></li>} */}
     </React.Fragment>
 
+    const [theme, setTheme] = useState(
+        localStorage.getItem('theme') || 'light'
+    );
+
+    const toggleTheme = () => {
+
+        if (theme === 'light') {
+            setTheme('dark');
+        }
+        else {
+            setTheme('light')
+        }
+
+    }
+
+
+
+    useEffect(() => {
+        localStorage.setItem('theme', theme);
+        document.body.className = theme;
+    }, [theme])
+
 
     return (
         <Navbar bg="light" expand="lg">
@@ -39,6 +61,12 @@ const NavBar = () => {
 
 
                         {menuItems}
+                        <Button className={`Header ${theme}`} onClick={toggleTheme} variant={theme}>{theme}{` `}
+                            {theme === 'light' ?
+                                <FaMoon></FaMoon>
+                                :
+                                <FaSun></FaSun>}
+                        </Button>
                     </Nav>
                     <Form className="d-flex">
 

@@ -6,6 +6,7 @@ import Home from "../pages/HomePage/Home/Home";
 import MyTask from "../pages/MyTask/MyTask";
 import EmailPasslogin from "../pages/shared/EmailPasslogin/EmailPasslogin";
 import Login from "../pages/shared/Login/Login";
+import Signup from "../pages/shared/Signup/Signup";
 
 
 const router = createBrowserRouter([
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
             {
                 path: '/emailpasslogin',
                 element: <EmailPasslogin></EmailPasslogin>
+            },
+            {
+                path: '/signup',
+                element: <Signup></Signup>
             },
 
         ]
