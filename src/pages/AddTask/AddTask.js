@@ -43,7 +43,7 @@ const AddTask = () => {
 
                     }
 
-                    fetch('http://localhost:5000/allmedia', {
+                    fetch('https://social-site-server-marziamostafa.vercel.app/allmedia', {
 
                         method: 'POST',
                         headers: {

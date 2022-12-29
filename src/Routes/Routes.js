@@ -20,7 +20,7 @@ const router = createBrowserRouter([
                 path: '/',
                 element: <PrivateRoute><Home></Home></PrivateRoute>,
                 loader: async ({ params }) => {
-                    return fetch(`http://localhost:5000/allmedia`)
+                    return fetch(`https://social-site-server-marziamostafa.vercel.app/allmedia`)
                 }
             },
             {

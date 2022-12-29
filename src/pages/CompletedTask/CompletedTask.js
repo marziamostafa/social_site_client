@@ -6,7 +6,7 @@ const CompletedTask = () => {
     const { user } = useContext(AuthContext)
     const [allInfo, setAllInfo] = useState([])
     useEffect(() => {
-        fetch(`http://localhost:5000/allmedia/${user?.email}`)
+        fetch(`https://social-site-server-marziamostafa.vercel.app/${user?.email}`)
             .then(res => res.json())
             .then(data => setAllInfo(data))
 

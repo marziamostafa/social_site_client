@@ -14,7 +14,7 @@ const Media = ({ data }) => {
     const [filtereComment, setFiltereComment] = useState([])
 
     useEffect(() => {
-        fetch(`http://localhost:5000/comments`)
+        fetch(`https://social-site-server-marziamostafa.vercel.app/comments`)
             .then(res => res.json())
             .then(data => {
                 setCategoryComments(data)
@@ -49,7 +49,7 @@ const Media = ({ data }) => {
 
         }
 
-        fetch('http://localhost:5000/comments', {
+        fetch('https://social-site-server-marziamostafa.vercel.app/comments', {
 
             method: 'POST',
             headers: {

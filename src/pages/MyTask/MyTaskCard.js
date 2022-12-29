@@ -13,16 +13,15 @@ const MyTaskCard = ({ info }) => {
     const [categoryComments, setCategoryComments] = useState('')
     const [filtereComment, setFiltereComment] = useState([])
 
-    const [show, setShow] = useState(false);
-    const handleShow = () => setShow(true);
-    const handleClose = () => setShow(false);
+
+
 
     const handleDeleteTask = id => {
 
         console.log(id)
         const proceed = window.confirm('Do you want to delete this Buyer?')
         if (proceed) {
-            fetch(`http://localhost:5000/delete/${id}`, {
+            fetch(`https://social-site-server-marziamostafa.vercel.app/delete/${id}`, {
                 method: 'DELETE'
             })
                 .then(res => res.json())
@@ -40,7 +39,7 @@ const MyTaskCard = ({ info }) => {
 
 
     useEffect(() => {
-        fetch(`http://localhost:5000/comments`)
+        fetch(`https://social-site-server-marziamostafa.vercel.app/comments`)
             .then(res => res.json())
             .then(data => {
                 setCategoryComments(data)

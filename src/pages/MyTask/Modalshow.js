@@ -13,7 +13,7 @@ const Modalshow = ({ _id }) => {
     const [review, setReview] = useState(allInfo)
 
     useEffect(() => {
-        fetch(`http://localhost:5000/allmedia/${user?.email}`)
+        fetch(`https://social-site-server-marziamostafa.vercel.app/allmedia/${user?.email}`)
             .then(res => res.json())
             .then(data => setAllInfo(data))
 
@@ -55,7 +55,7 @@ const Modalshow = ({ _id }) => {
                     }
 
                     setReview(item)
-                    fetch(`http://localhost:5000/delete/${_id}`, {
+                    fetch(`https://social-site-server-marziamostafa.vercel.app/delete/${_id}`, {
 
                         method: 'PUT',
                         headers: {
