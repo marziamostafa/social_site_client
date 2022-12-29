@@ -106,7 +106,7 @@ const Signup = () => {
                     {error}
                 </Form.Text>
             </Form>
-            <p className='ps-2 text-dark'><small>Already have an account? <Link to='/login'>Create new account</Link></small></p>
+            <p className='ps-2 text-dark'><small>Already have an account? <Link to='/emailpasslogin'>Login</Link></small></p>
 
             <div className='loader container'>
                 <Button onClick={handleGoogleSignIn} className='mb-2 d-flex justify-content-center align-items-center' variant="outline-dark"><FaGoogle></FaGoogle> Sign up with Google</Button>

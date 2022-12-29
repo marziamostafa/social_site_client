@@ -18,28 +18,32 @@ const NavBar = () => {
         <li className='px-4 pt-2'><Link to="/mytask">My Task</Link></li>
         <li className='px-4 pt-2'><Link to="/completedtask">Completed Task</Link></li>
 
-        {/* {user?.uid ?
-            <>
-                <li><Link to="/dashboard">Dashboard</Link></li>
-                <li><button className='btn btn-outline' onClick={handleLogOut}>Sign out</button></li>
-            </>
-            : <li><Link className='btn btn-outline' to="/login">Login</Link></li>} */}
+        <li className='px-4 pt-2'><Link to="/mytask">Not Completed</Link></li>
+
     </React.Fragment>
 
     const [theme, setTheme] = useState(
         localStorage.getItem('theme') || 'light'
     );
 
+
     const toggleTheme = () => {
 
         if (theme === 'light') {
             setTheme('dark');
+            // document.body.style.backgroundColor = "#fff"
         }
         else {
             setTheme('light')
+            // document.body.style.backgroundColor = "#333"
         }
 
     }
+    useEffect(() => {
+        localStorage.setItem('theme', theme);
+
+        document.body.className = theme;
+    }, [theme])
 
     const handleLogOut = () => {
         logOut()
@@ -50,10 +54,7 @@ const NavBar = () => {
     }
 
 
-    useEffect(() => {
-        localStorage.setItem('theme', theme);
-        document.body.className = theme;
-    }, [theme])
+
 
 
     return (
@@ -70,19 +71,23 @@ const NavBar = () => {
 
 
                         {menuItems}
-                        <Button className={`Header ${theme}`} onClick={toggleTheme} variant={'outline-dark'}>{theme}{` mode`}
+                        <Button className="" onClick={toggleTheme} variant="outline-dark">
                             {theme === 'light' ?
-                                <></>
+                                <><FaSun></FaSun></>
                                 :
-                                <></>}
+                                <><FaMoon></FaMoon></>}
                         </Button>
                     </Nav>
-                    <Form className="d-flex">
+
+                    <Form className="d-flex align-items-center">
+
                         {user?.uid ?
 
-                            <Button onClick={handleLogOut} variant="outline-success">Logout</Button>
+                            <>
+                                <p className='mr-1'>{user?.email}</p>
+                                <Button onClick={handleLogOut} variant="outline-success">Logout</Button></>
                             :
-                            <Button variant="outline-success">LogIn</Button>
+                            <Button variant="outline-success"><Link to='/login'>LogIn</Link></Button>
                         }
                     </Form>
                 </Navbar.Collapse>

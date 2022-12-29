@@ -47,14 +47,6 @@ const Login = () => {
             .then(result => {
                 const user = result.user;
                 console.log(user);
-                const userInfo = {
-                    displayName: user.displayName,
-                    email: user.email,
-                }
-
-                updateUser(userInfo)
-
-
             })
             .catch(error => {
                 console.error(error);

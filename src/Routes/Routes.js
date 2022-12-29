@@ -7,6 +7,7 @@ import MyTask from "../pages/MyTask/MyTask";
 import EmailPasslogin from "../pages/shared/EmailPasslogin/EmailPasslogin";
 import Login from "../pages/shared/Login/Login";
 import Signup from "../pages/shared/Signup/Signup";
+import PrivateRoute from "./PrivateRoute";
 
 
 const router = createBrowserRouter([
@@ -17,7 +18,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/',
-                element: <Home></Home>,
+                element: <PrivateRoute><Home></Home></PrivateRoute>,
                 loader: async ({ params }) => {
                     return fetch(`http://localhost:5000/allmedia`)
                 }
@@ -28,16 +29,16 @@ const router = createBrowserRouter([
             },
             {
                 path: '/addtask',
-                element: <AddTask></AddTask>
+                element: <PrivateRoute><AddTask></AddTask></PrivateRoute>
             },
             {
                 path: '/mytask',
-                element: <MyTask></MyTask>,
+                element: <PrivateRoute><MyTask></MyTask></PrivateRoute>,
 
             },
             {
                 path: '/completedtask',
-                element: <CompletedTask></CompletedTask>
+                element: <PrivateRoute><CompletedTask></CompletedTask></PrivateRoute>
             },
             {
                 path: '/emailpasslogin',

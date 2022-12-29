@@ -1,5 +1,10 @@
+
+import { Button } from 'bootstrap';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import Modalshow from './Modalshow';
+
+
 
 const MyTaskCard = ({ info }) => {
     const { image, details, postTime, name, tools, link, _id } = info
@@ -7,6 +12,10 @@ const MyTaskCard = ({ info }) => {
     const [deleteTask, setDeleteTask] = useState([])
     const [categoryComments, setCategoryComments] = useState('')
     const [filtereComment, setFiltereComment] = useState([])
+
+    const [show, setShow] = useState(false);
+    const handleShow = () => setShow(true);
+    const handleClose = () => setShow(false);
 
     const handleDeleteTask = id => {
 
@@ -29,6 +38,7 @@ const MyTaskCard = ({ info }) => {
         }
     }
 
+
     useEffect(() => {
         fetch(`http://localhost:5000/comments`)
             .then(res => res.json())
@@ -49,7 +59,7 @@ const MyTaskCard = ({ info }) => {
 
 
     return (
-        <div className="card mb-3 max-w-screen-lg justify-items-center ">
+        <div className="card mb-3 max-w-screen-lg justify-items-center bg-lime-200">
             <img src={image} className="card-img-top" alt="" />
             <div className="card-body">
                 <h5 className="card-title fs-4 fw-bold">{name}</h5>
@@ -78,6 +88,14 @@ const MyTaskCard = ({ info }) => {
                 </div>
             </div>
             <input onClick={() => handleDeleteTask(_id)} className='btn btn-dark w-full mt-4 text-black' value="Delete this Task" type="submit" />
+
+
+            {
+                <Modalshow
+
+                    _id={_id}                ></Modalshow>
+            }
+
         </div>
     );
 };

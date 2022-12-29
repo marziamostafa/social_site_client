@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { FaUserCircle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthProvider/AuthProvider';
 import Comments from './Comments';
@@ -71,46 +72,49 @@ const Media = ({ data }) => {
     }
     return (
         <div className="card mb-3 max-w-screen-lg justify-items-center ">
-            <img src={image} className="card-img-top" alt="" />
-            <div className="card-body">
-                <h5 className="card-title fs-4 fw-bold">{name}</h5>
-                <p><small>{postTime}</small></p>
-                <p className="card-text">{details}</p>
-                <p className="card-text">Tools: {tools}</p>
-                <button className='btn btn-secondary'><a href={link} >Visit Website</a></button>
+            <p className='d-flex justify-content-center align-items-center bg-red-200 pb-2'><FaUserCircle></FaUserCircle> {user?.email}</p>
+            <div className='bg-emerald-200'>
+                <img src={image} className="card-img-top h-auto" alt="" />
+                <div className="card-body">
+                    <h5 className="card-title fs-4 fw-bold all-text">{name}</h5>
+                    <p className='all-text'><small>{postTime}</small></p>
+                    <p className="card-text all-text">{details}</p>
+                    <p className="card-text all-text">Tools: {tools}</p>
+                    <button className='btn btn-secondary '><a href={link} >Visit Website</a></button>
 
 
 
-                <div className="card text-bg-light mb-3 mt-4" >
-                    <div className="card-header">Comments {filtereComment.length}</div>
+                    <div className="card text-bg-light mb-3 mt-4" >
+                        <div className="card-header">Comments {filtereComment.length}</div>
 
-                    {
-                        // filtereComment.map(dt => <div class="card">
-                        //     <div class="card-header" key={dt._id}>
-                        //         {dt?.email}
-                        //     </div>
-                        //     <div class="card-body">
-                        //         <p class="card-text">{dt?.comment}</p>
+                        {
+                            filtereComment.map(dt => <div class="card mb-2 bg-orange-100">
+                                <div class="card-header d-flex align-items-center" key={dt._id}>
+                                    <FaUserCircle></FaUserCircle> {dt?.email}
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">{dt?.comment}</p>
 
-                        //     </div>
-                        // </div>)
-                    }
+                                </div>
+                            </div>)
+                        }
 
 
 
-                    <div className="card-body">
+                        <div className="card-body">
 
-                        <p className="card-text"></p>
+                            <p className="card-text"></p>
+                        </div>
+
+
+                        <form class="mb-3" onSubmit={handleComment}>
+
+                            <textarea className="form-control" name="comment" id="exampleFormControlTextarea1" rows="3" required></textarea>
+
+                            <input className='btn btn-dark mt-4 text-black' value="Comment" type="submit" />
+                        </form>
+
                     </div>
-
-
-                    <form class="mb-3" onSubmit={handleComment}>
-
-                        <textarea className="form-control" name="comment" id="exampleFormControlTextarea1" rows="3"></textarea>
-
-                        <input className='btn btn-dark mt-4 text-black' value="Comment" type="submit" />
-                    </form>
-
                 </div>
             </div>
         </div>
